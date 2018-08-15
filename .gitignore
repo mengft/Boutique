@@ -1,0 +1,8 @@
+# 依赖库安装目录
+node_modules
+yarn.lock
+package-lock.json
+
+# Android
+android/gradle*
+android/keystores
