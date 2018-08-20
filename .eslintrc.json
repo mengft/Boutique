@@ -38,6 +38,15 @@
         "no-use-before-define": "off",
         "react/jsx-indent": [2, "tab"],
         "react/jsx-indent-props": [2, "tab"],
-        "no-useless-concat": "off"
+        "no-useless-concat": "off",
+        "react/react-in-jsx-scope": "off",
+        "max-len": "off",
+        "no-mixed-spaces-and-tabs": "off",
+        "prefer-destructuring": "off",
+        "react/prop-types": "off",
+        "global-require": "off",
+        "class-methods-use-this": "off",
+        "react/jsx-no-bind": "off",
+        "react/destructuring-assignment": "off"
     }
 }

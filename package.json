@@ -8,7 +8,10 @@
   },
   "dependencies": {
     "react": "16.4.1",
-    "react-native": "0.56.0"
+    "react-native": "0.56.0",
+    "react-native-vector-icons": "^5.0.0",
+    "react-navigation": "^2.11.2",
+    "react-navigation-material-bottom-tabs": "^0.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
