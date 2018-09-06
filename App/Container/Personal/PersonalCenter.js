@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:51:54
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 10:05:58
+ * @Last Modified time: 2018-09-06 10:29:41
  */
 
 import React from 'react';
@@ -81,7 +81,11 @@ class PersonalCenter extends React.Component {
 					iconName="cog"
 				/>
 				{this.renderUserInfo()}
-				{'1,2,3,4,5,6,7,8,9'.split(',').map(item => <Text key={item} style={{ fontSize: FontSize(90) }}>{item}</Text>)}
+				<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('formScreen')}>
+					<View>
+						<Text style={{ fontSize: FontSize(90) }}>表单操作</Text>
+					</View>
+				</TouchableWithoutFeedback>
 			</ScrollContainer>
 		);
 	}

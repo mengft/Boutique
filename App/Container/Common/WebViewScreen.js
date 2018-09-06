@@ -2,21 +2,20 @@
  * @Author: fantao.meng 
  * @Date: 2018-08-30 13:39:18 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 17:55:49
+ * @Last Modified time: 2018-09-06 10:52:32
  */
 
 import React from 'react';
 import { WebView, View, Text } from 'react-native';
 import * as PropTypes from 'prop-types'
-import { HeaderLeft, HeaderRight, LoadView } from '../../Component';
+import { LoadView } from '../../Component';
 import { Colors, ThemeStyles } from '../../Theme';
 
 export default class WebViewScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        ...ThemeStyles.defaultHeaderStyle,
+        ...ThemeStyles.defaultHeaderStyle(navigation),
         headerTitle: navigation.getParam('title', '加载中...'),
-        headerLeft: <HeaderLeft navigation={navigation} />,
     });
 
     /**
