@@ -1,0 +1,20 @@
+// 将设置放入此文件中以覆盖默认设置
+{
+    "window.zoomLevel": 0,
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "javascript.validate.enable": false,
+    "javascript.format.enable": false,
+    // 文件Header设置
+    "fileheader.Author": "fantao.meng",
+    "fileheader.LastModifiedBy": "fantao.meng",
+    "eslint.enable": false,
+    "eslint.run": "onSave",
+    "eslint.autoFixOnSave": true,
+    // "eslint.validate": [
+    //     "javascript",
+    //     "javascriptreact",
+    //     "jsx"
+    // ]
+    // Tab键自动补全Elment标签
+    "emmet.triggerExpansionOnTab": true,
+}
