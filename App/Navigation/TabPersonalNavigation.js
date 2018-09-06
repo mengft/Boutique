@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:19:00
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 17:56:55
+ * @Last Modified time: 2018-09-06 10:29:24
  */
 
 import React from 'react';
@@ -16,11 +16,13 @@ import { Colors } from '../Theme';
 // 界面引入
 import PersonalCenter from '../Container/Personal/PersonalCenter';
 import PersonalInfo from '../Container/Personal/PersonalInfo';
+import FormScreen from '../Container/Personal/FormScreen';
 
 // 路由配置
 const routeConfiguration = {
 	personalCenter: { screen: PersonalCenter },
 	personalInfo: { screen: PersonalInfo },
+	formScreen: { screen: FormScreen },
 };
 
 // 导航配置

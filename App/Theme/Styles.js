@@ -2,10 +2,12 @@
  * @Author: fantao.meng
  * @Date: 2018-08-17 00:45:38
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 17:54:12
+ * @Last Modified time: 2018-09-06 11:01:27
  */
 
+import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
+import { HeaderLeft } from '../Component';
 import { Colors, px2dp, FontSize } from './index';
 
 module.exports = {
@@ -33,7 +35,7 @@ module.exports = {
 	},
 
 	// 二级界面Header样式
-	defaultHeaderStyle: {
+	defaultHeaderStyle: (navigation) => ({
 		headerStyle: {
 			// IOS Style
 			borderBottomWidth: StyleSheet.hairlineWidth,
@@ -54,7 +56,8 @@ module.exports = {
 			color: 'rgba(0, 0, 0, .9)',
 			marginHorizontal: 16,
 		},
-	},
+		headerLeft: <HeaderLeft navigation={navigation} />,
+	}),
 
 	// react-navigation 默认样式
 	navigationOptions: {
@@ -79,4 +82,7 @@ module.exports = {
 			marginHorizontal: 16,
 		},
 	},
+
+	// 界面Container
+    container: { flex: 1, backgroundColor: Colors.CBK },
 };
