@@ -2,10 +2,10 @@
  * @Author: fantao.meng
  * @Date: 2018-08-17 00:58:48
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-08-20 11:08:54
+ * @Last Modified time: 2018-09-05 15:45:25
  */
 
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,4 +24,6 @@ module.exports = {
 	uiWidthPx: 750,
 	px2dp,
 	mainPadding: px2dp(50),
+	APPBAR_HEIGHT: Platform.OS === 'ios' ? 44 : 56,		// Header高度
+	STATUSBAR_HEIGHT: Platform.OS === 'ios' ? 20 : 0,	// 状态栏高度
 };

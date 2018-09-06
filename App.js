@@ -8,6 +8,8 @@
 
 import React, { Component } from 'react';
 import { YellowBox } from 'react-native';
+import { Provider } from 'react-redux'
+import configureStore from './App/Redux/CreateStore'
 import RootNavigation from './App/Navigation/RootNavigation';
 
 // 黄盒警告
@@ -20,7 +22,9 @@ type Props = {};
 export default class App extends Component<Props> {
 	render() {
 		return (
-			<RootNavigation />
+			<Provider store={configureStore()}>
+				<RootNavigation />
+			</Provider>
 		);
 	}
 }
