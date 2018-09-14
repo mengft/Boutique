@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:51:54
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 10:05:42
+ * @Last Modified time: 2018-09-12 19:51:22
  */
 
 import React from 'react';
@@ -49,12 +49,16 @@ export default class ScrollContainer extends React.Component {
 			Animated.timing(this.props.navigation.state.params.opacity, {
 				toValue: 1,
 				duration: 500,
+				isInteraction: true,
+				useNativeDriver: true,
 			}).start();
 		} else if (this.contentOffsetY >= scrollOffset && contentOffsetY < scrollOffset) {
 			// 下滑
 			Animated.timing(this.props.navigation.state.params.opacity, {
 				toValue: 0,
 				duration: 500,
+				isInteraction: true,
+				useNativeDriver: true,
 			}).start(() => {
 				this.props.navigation.setParams({ title: '' });
 			});
@@ -64,7 +68,12 @@ export default class ScrollContainer extends React.Component {
 
 	render() {
 		return (
-			<ScrollView style={[Styles.container, this.props.style]} scrollEventThrottle={16} onScroll={e => this.onScroll(e.nativeEvent.contentOffset.y)}>
+			<ScrollView 
+				style={[Styles.container, this.props.style]} 
+				scrollEventThrottle={16} 
+				onScroll={e => this.onScroll(e.nativeEvent.contentOffset.y)}
+                overScrollMode='always'
+			>
                 {this.props.children}
 			</ScrollView>
 		);

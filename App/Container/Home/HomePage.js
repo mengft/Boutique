@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:00:15
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-03 17:20:27
+ * @Last Modified time: 2018-09-10 15:25:20
  */
 
 import React from 'react';
@@ -13,46 +13,8 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LoadImage, LoadView } from '../../Component';
 import { TOGGLE_TAR_BAR } from '../../Redux/ActionTypes';
-import {
-	px2dp, Colors, ThemeStyles, FontSize, Metrics,
-} from '../../Theme';
-import * as Config from '../../Config';
-
-const FlatListSource = [
-	{
-		title: '时下热门', text: '沧海一声笑，滔滔两岸潮', sourceType: 'image', source: { uri: `${Config.Host}/Assets/Images/Home/WechatIMG600.jpg` },
-	},
-	{
-		title: '对话开发者', text: '这里便是诗和远方', sourceType: 'video', source: { uri: `${Config.Host}/Assets/Images/Home/WechatIMG602.jpg` },
-	},
-	{
-		title: '夜景俯瞰', text: '中国香港的百万夜景', sourceType: 'image', source: { uri: `${Config.Host}/Assets/Images/Home/WechatIMG605.jpg` },
-	},
-	{
-		title: '美国漫威', text: 'I\'m Your Bat Man', sourceType: 'appsale', source: { uri: `${Config.Host}/Assets/Images/Home/WechatIMG606.jpg` },
-	},
-	{
-		title: '日本动画', text: '蜡笔小新，不是佩琦', sourceType: 'image', source: { uri: `${Config.Host}/Assets/Images/Home/WechatIMG607.jpg` },
-	},
-	{
-		title: '动漫推荐', text: '在梦里，我只记得你的名字', sourceType: 'image', source: { uri: `${Config.Host}/Assets/Images/Home/WechatIMG609.jpg` },
-	},
-];
-
-const FlatListFooterSource = [
-	{
-		name: '抖音短视频-好玩的人', type: '摄影与录像', iconUri: 'https://www.apple.com/autopush/cn/itunes/charts/free-apps/images/2018/2/21d871d12d8e55991510b8b7c3b069fec3fbc9027735a66af7be787290429ac4.jpg', price: '¥12.00',
-	},
-	{
-		name: '闲鱼-挂闲鱼，闲置能换dskflskflskflsdk', type: '购物', iconUri: 'https://www.apple.com/autopush/cn/itunes/charts/free-apps/images/2018/2/e5c8bebcb18d3b059e641b43344960494053125d3a631ce71d50ada6592671e6.jpg', price: false,
-	},
-	{
-		name: '喜马拉雅FM', type: '图书', iconUri: 'https://www.apple.com/autopush/cn/itunes/charts/free-apps/images/2018/2/38095967cb4a65e1c0492d741912cdc5ba6c6a07fd02bf5f2224f20fd16791fd.jpg', price: '$14.00',
-	},
-	{
-		name: '网易有道词典-7亿人都在用的外语学习翻译词典', type: '参考', iconUri: 'https://www.apple.com/autopush/cn/itunes/charts/free-apps/images/2018/2/df1e64c9679f76f66267cb0887d0aadbe16ff0a49b14ce861d684100585b69c1.jpg', price: false,
-	},
-];
+import { px2dp, Colors, ThemeStyles, FontSize, Metrics } from '../../Theme';
+import { FlatListSource, FlatListFooterSource } from '../../Utils/Constant';
 
 class HomePage extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -116,6 +78,8 @@ class HomePage extends React.Component {
 					{
 						toValue: 0.96,
 						duration: 80,
+						isInteraction: true,
+						useNativeDriver: true,
 					},
 				).start();
 			});
@@ -138,6 +102,8 @@ class HomePage extends React.Component {
 				{
 					toValue: 1,
 					duration: 80,
+					isInteraction: true,
+					useNativeDriver: true,
 				},
 			).start();
 		}
@@ -152,6 +118,7 @@ class HomePage extends React.Component {
 				Animated.timing(this.state.position, {
 					toValue: 1,
 					timing: 40,
+					isInteraction: true,
 				}),
 				// 还原缩放效果
 				Animated.timing(
@@ -159,6 +126,8 @@ class HomePage extends React.Component {
 					{
 						toValue: 1,
 						duration: 80,
+						isInteraction: true,
+						useNativeDriver: true,
 					},
 				),
 			]).start();
@@ -166,6 +135,7 @@ class HomePage extends React.Component {
 			Animated.timing(this.state.position, {
 				toValue: 2,
 				timing: 40,
+				isInteraction: true,
 			}).start(() => this.setState({ modalVisible: false }));
 		}
 	}

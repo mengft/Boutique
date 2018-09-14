@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-26 18:22:30
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 21:39:57
+ * @Last Modified time: 2018-09-07 10:37:55
  */
 
 import React, { ReactDOM, ReactChildren, ReactElement } from 'react';
@@ -111,10 +111,12 @@ class ScrollTopBar extends React.Component {
 						Animated.timing(this.state.position, {
 							toValue: -Metrics.screenWidth * (this.state.index + 1),
 							duration: ANIMATED_DURATION,
+							isInteraction: true,
 						}),
 						Animated.timing(this.state.underline, {
 							toValue: x + (width - UNDERLINE_WIDTH) / 2,
 							duration: ANIMATED_DURATION,
+							isInteraction: true,
 						}),
 					]).start(() => {
 						this.setState({ index: ++this.state.index }, () => {
@@ -132,10 +134,12 @@ class ScrollTopBar extends React.Component {
 					Animated.timing(this.state.position, {
 						toValue: -Metrics.screenWidth * (this.state.index - 1),
 						duration: ANIMATED_DURATION,
+						isInteraction: true,
 					}),
 					Animated.timing(this.state.underline, {
 						toValue: x + (width - UNDERLINE_WIDTH) / 2,
 						duration: ANIMATED_DURATION,
+						isInteraction: true,
 					}),
 				]).start(() => {
 					this.setState({ index: --this.state.index }, () => {
@@ -184,6 +188,7 @@ class ScrollTopBar extends React.Component {
 		Animated.timing(this.state.topBar, {
 			toValue: translateX,
 			duration: ANIMATED_DURATION,
+			isInteraction: true,
 		}).start();
 	}
 
@@ -221,10 +226,12 @@ class ScrollTopBar extends React.Component {
 						Animated.timing(this.state.position, {
 							toValue: -Metrics.screenWidth * index,
 							duration: ANIMATED_DURATION,
+							isInteraction: true,
 						}),
 						Animated.timing(this.state.underline, {
 							toValue: x + (width - UNDERLINE_WIDTH) / 2,
 							duration: ANIMATED_DURATION,
+							isInteraction: true,
 						}),
 					]).start(() => {
 						this.setState({ index }, () => {
@@ -242,10 +249,12 @@ class ScrollTopBar extends React.Component {
 						Animated.timing(this.state.position, {
 							toValue: -Metrics.screenWidth * index,
 							duration: ANIMATED_DURATION,
+							isInteraction: true,
 						}),
 						Animated.timing(this.state.underline, {
 							toValue: x + (width - UNDERLINE_WIDTH) / 2,
 							duration: ANIMATED_DURATION,
+							isInteraction: true,
 						}),
 					]).start(() => {
 						this.setState({ index }, () => {
@@ -282,6 +291,7 @@ class ScrollTopBar extends React.Component {
 			Animated.timing(this.state.topBar, {
 				toValue: 0,
 				duration: ANIMATED_DURATION,
+				isInteraction: true,
 			}).start();
 			return;
 		}
@@ -292,6 +302,7 @@ class ScrollTopBar extends React.Component {
 			Animated.timing(this.state.topBar, {
 				toValue: -(this.topBarContentWidth - Metrics.screenWidth),
 				duration: ANIMATED_DURATION,
+				isInteraction: true,
 			}).start();
 			return;
 		}
@@ -307,6 +318,7 @@ class ScrollTopBar extends React.Component {
 					Animated.timing(this.state.topBar, {
 						toValue: -translateX,
 						duration: ANIMATED_DURATION,
+						isInteraction: true,
 					}).start();
 				}
 			});
@@ -321,6 +333,7 @@ class ScrollTopBar extends React.Component {
 					Animated.timing(this.state.topBar, {
 						toValue: -translateX,
 						duration: ANIMATED_DURATION,
+						isInteraction: true,
 					}).start();
 				}
 			});

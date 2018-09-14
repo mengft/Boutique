@@ -2,11 +2,11 @@
  * @Author: fantao.meng
  * @Date: 2018-08-17 00:45:38
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 11:01:27
+ * @Last Modified time: 2018-09-11 19:21:35
  */
 
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 import { HeaderLeft } from '../Component';
 import { Colors, px2dp, FontSize } from './index';
 
@@ -24,6 +24,10 @@ module.exports = {
 			//   height: StyleSheet.hairlineWidth,
 			// },
 			// elevation: 4,
+			
+			// 补充 解决Android  borderBottom阴影的问题
+			elevation: 0,
+			backgroundColor: Colors.CBK,
 		},
 		headerTintColor: Colors.C1,
 		headerTitleStyle: {

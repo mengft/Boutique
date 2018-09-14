@@ -2,17 +2,17 @@
  * @Author: fantao.meng 
  * @Date: 2018-08-30 19:37:01 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-02 20:40:33
+ * @Last Modified time: 2018-09-13 20:02:27
  */
 
 import { NavigationActions } from 'react-navigation';
 import { RootNavigator } from '../Navigation/RootNavigation';
 import { MainTabNavigator } from '../Navigation//MainTabNavigation';
 import { TabHomeNavigator } from '../Navigation/TabHomeNavigation';
-import { TabFormNavigator } from '../Navigation/TabFormNavigation';
+import { TabArticleNavigator } from '../Navigation/TabArticleNavigation';
 import { TabPersonalNavigator } from '../Navigation/TabPersonalNavigation';
 
-const RootNavigatorReducer = (state, action) => {
+export const RootNavigatorReducer = (state, action) => {
     switch (action.type) {
         default:
             const newState = RootNavigator.router.getStateForAction(action, state);
@@ -20,7 +20,7 @@ const RootNavigatorReducer = (state, action) => {
     }
 }
 
-const MainNavigatorReducer = (state, action) => {
+export const MainNavigatorReducer = (state, action) => {
     switch (action.type) {
         case 'TOGGLE_TAR_BAR':
             let { tabBarVisible } = action.payload;
@@ -36,7 +36,7 @@ const MainNavigatorReducer = (state, action) => {
     }
 }
 
-const TabHomeNavigatorReducer = (state, action) => {
+export const TabHomeNavigatorReducer = (state, action) => {
     switch (action.type) {
         default:
             const newState = TabHomeNavigator.router.getStateForAction(action, state);
@@ -44,20 +44,18 @@ const TabHomeNavigatorReducer = (state, action) => {
     }
 }
 
-const TabFormNavigatorReducer = (state, action) => {
+export const TabArticleNavigatorReducer = (state, action) => {
     switch (action.type) {
         default:
-            const newState = TabFormNavigator.router.getStateForAction(action, state);
+            const newState = TabArticleNavigator.router.getStateForAction(action, state);
             return newState || state
     }
 }
 
-const TabPersonalNavigatorReducer = (state, action) => {
+export const TabPersonalNavigatorReducer = (state, action) => {
     switch (action.type) {
         default:
             const newState = TabPersonalNavigator.router.getStateForAction(action, state);
             return newState || state
     }
 }
-
-export { RootNavigatorReducer, MainNavigatorReducer, TabHomeNavigatorReducer, TabFormNavigatorReducer, TabPersonalNavigatorReducer }

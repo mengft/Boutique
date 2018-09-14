@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:19:00
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-02 20:41:16
+ * @Last Modified time: 2018-09-13 19:57:04
  */
 
 import React from 'react';
@@ -12,6 +12,7 @@ import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-n
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TabBarLabel } from '../Component';
 import { Colors, ThemeStyles } from '../Theme';
+import { TransitionConfiguration } from '../Utils/Function';
 
 // 界面引入
 import ArticlePage from '../Container/Form/ArticlePage';
@@ -28,24 +29,28 @@ const navigatorConfiguration = {
 	// 路由选项
 	initialRouteName: 'articlePage',
 	// 视觉选项
-	// mode: 'card',
+	mode: 'card',
 	headerMode: 'screen',
+	// 统一为IOS 兼容Android的Header flex-start排列方式
+	headerLayoutPreset: 'center',
+	// 转场动画
+	transitionConfig: TransitionConfiguration,
+
 	navigationOptions: {
 		...ThemeStyles.navigationOptions,
-	}
+	},
 };
 
-export const TabFormNavigator = createStackNavigator(routeConfiguration, navigatorConfiguration);
-export const middlewareTabForm = createReactNavigationReduxMiddleware('form', state => state.tabFormNavigatorReducer);
-const TabFormNavigationReduxify = reduxifyNavigator(TabFormNavigator, 'form');
+export const TabArticleNavigator = createStackNavigator(routeConfiguration, navigatorConfiguration);
+export const middlewareTabArticle = createReactNavigationReduxMiddleware('article', state => state.tabArticleNavigatorReducer);
+const TabArticleNavigationReduxify = reduxifyNavigator(TabArticleNavigator, 'article');
 
-class TabFormNavigation extends React.Component {
+class TabArticleNavigation extends React.Component {
 
 	static navigationOptions = ({ navigation, screenProps }) => {
 		return {
 			tabBarIcon: ({ focused, tintColor }) => <Icon name="logo-twitter" size={24} color={tintColor} />,
 			tabBarLabel: '表单',
-			tabBarColor: Colors.formTabBarColor,
 			tabBarVisible: navigation.getParam('tabBarVisible', true)
 		}
 	}
@@ -53,7 +58,7 @@ class TabFormNavigation extends React.Component {
 	render() {
 		const { navigationState, dispatch } = this.props
 		return (
-			<TabFormNavigationReduxify 
+			<TabArticleNavigationReduxify 
 				state={navigationState}
 				dispatch={dispatch}
 			/>
@@ -62,7 +67,7 @@ class TabFormNavigation extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	navigationState: state.tabFormNavigatorReducer,
+	navigationState: state.tabArticleNavigatorReducer,
 });
 
-export default connect(mapStateToProps)(TabFormNavigation);
+export default connect(mapStateToProps)(TabArticleNavigation);

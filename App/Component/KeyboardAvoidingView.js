@@ -2,12 +2,12 @@
  * @Author: fantao.meng 
  * @Date: 2018-09-06 10:26:04 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 15:40:09
+ * @Last Modified time: 2018-09-13 09:20:58
  */
 
 import React, { ReactNode } from 'react';
 import * as PropTypes from 'prop-types';
-import { ScrollView, NativeModules, findNodeHandle } from 'react-native';
+import { ScrollView, NativeModules, findNodeHandle, Keyboard, Platform } from 'react-native';
 import { px2dp, ThemeStyles } from '../Theme';
 
 export default class KeyboardAvoidingView extends React.Component {
@@ -31,6 +31,7 @@ export default class KeyboardAvoidingView extends React.Component {
         let target = e.nativeEvent.target;
 		NativeModules.UIManager.measure(target, (x, y, width, height, pageX, pageY) => {
             // console.log('x=' + x + '--y=' + y + '--width=' + width + '--height=' + height + '--pageX=' + pageX + '--pageY=' + pageY);
+            height = height || px2dp(30)
             this.keyboardAvoidingView.scrollResponderScrollNativeHandleToKeyboard(
                 findNodeHandle(target), height, true
             )
@@ -41,8 +42,12 @@ export default class KeyboardAvoidingView extends React.Component {
         return (
             <ScrollView 
                 ref={e => { if (e) this.keyboardAvoidingView = e }}
-                keyboardDismissMode='on-drag'
                 style={[ThemeStyles.container, { paddingLeft: px2dp(30) }, this.props.style]}
+                overScrollMode='always'         // 仅在IOS下可用
+                bounces                         // 仅在IOS下可用
+                alwaysBounceVertical            // 仅在IOS下可用
+                keyboardDismissMode='on-drag'   // 仅在IOS下可用
+                onScrollBeginDrag={() => { if (Platform.OS === 'android') Keyboard.dismiss }}   // 兼容Android keyboardDismissMode 参数失效问题
             >
                 {React.Children.map(this.props.children, child => {
                     let props = {

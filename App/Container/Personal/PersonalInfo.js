@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-09-05 17:47:13
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 10:52:00
+ * @Last Modified time: 2018-09-11 19:18:40
  */
 
 import React from 'react';
@@ -15,7 +15,7 @@ import { ThemeStyles, px2dp, FontFamily, FontSize, Colors, Metrics } from '../..
 class PersonalInfo extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         ...ThemeStyles.defaultHeaderStyle(navigation),
-    	headerTitle: '个人资料',
+        headerTitle: '个人资料',
     });
 
     constructor (props) {

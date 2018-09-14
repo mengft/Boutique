@@ -6,6 +6,10 @@ package-lock.json
 # Android
 android/gradle*
 android/keystores
+android/app/build
+android/build
+android/.*
+.idea
 
 # 参考资源
 Reference/

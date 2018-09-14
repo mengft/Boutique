@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-09-04 11:07:39
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 16:23:23
+ * @Last Modified time: 2018-09-07 10:23:22
  */
 
 import React from 'react';
@@ -170,7 +170,8 @@ export default class FlatListRefresh extends React.Component {
 	restoreAnimted() {
 		Animated.timing(this.state.headerHeight, {
 			toValue: 0,
-			duration: 760,
+			duration: 600,
+			isInteraction: true,
 		}).start(() => {
 			this.setState({ refreshStatus: 0 });
 		});
@@ -204,7 +205,7 @@ export default class FlatListRefresh extends React.Component {
 								<Text style={Styles.warnText}>{warnText}</Text>
 							</View>
 						)
-						:						this.props.refreshControl()
+						: this.props.refreshControl()
 					}
 				</Animated.View>
 				{typeof this.props.ListHeaderComponent === 'function' && this.props.ListHeaderComponent()}
