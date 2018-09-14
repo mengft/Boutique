@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:19:00
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-02 19:10:34
+ * @Last Modified time: 2018-09-12 19:54:21
  */
 
 import React from 'react';
@@ -11,7 +11,8 @@ import { createStackNavigator } from 'react-navigation';
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TabBarLabel } from '../Component';
-import { Colors } from '../Theme';
+import { Colors, ThemeStyles } from '../Theme';
+import { TransitionConfiguration } from '../Utils/Function';
 
 // 界面引入
 import HomePage from '../Container/Home/HomePage';
@@ -26,8 +27,16 @@ const navigatorConfiguration = {
 	// 路由选项
 	initialRouteName: 'homePage',
 	// 视觉选项
-	// mode: 'card',
+	mode: 'card',
 	headerMode: 'screen',
+	// 统一为IOS 兼容Android的Header flex-start排列方式
+	headerLayoutPreset: 'center',
+	// 转场动画
+	transitionConfig: TransitionConfiguration,
+
+	navigationOptions: {
+		...ThemeStyles.navigationOptions,
+	},
 };
 
 
@@ -39,9 +48,8 @@ class TabHomeNavigation extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		tabBarIcon: ({ focused, tintColor }) => <Icon name="logo-windows" size={22} color={tintColor} />,
 		tabBarLabel: '首页',
-		tabBarColor: Colors.homeTabBarColor,
 		tabBarVisible: navigation.getParam('tabBarVisible', true)
-	})
+	});
 
 	render() {
 		const { navigation, navigationState, dispatch } = this.props

@@ -2,21 +2,18 @@
  * @Author: fantao.meng
  * @Date: 2018-08-17 00:22:23
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 18:46:04
+ * @Last Modified time: 2018-09-12 19:54:07
  */
 
 module.exports = {
 	// MainTabNavigation
-	activeTintColor: '#ffffff',
+	activeTintColor: '#0cb585',
 	activeBackgroundColor: 'transparent',
 	inactiveTintColor: '#929292',
 	inactiveBackgroundColor: 'transparent',
 	// TabBar   推荐分配颜色 #3366f7 #5c27eb #2f6b69 #c03961
-	homeTabBarColor: '#2f6b69',
-	formTabBarColor: '#5c27eb',
-	personalTabBarColor: '#c03961',
 	// 主色卡
-	primary: '#2994FF',
+	primary: '#0cb585',
 	C0: '#000000',
 	C1: '#364256',
 	C2: '#3c4d66',

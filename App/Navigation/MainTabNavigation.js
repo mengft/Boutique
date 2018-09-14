@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:54:36
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 14:49:03
+ * @Last Modified time: 2018-09-13 19:57:19
  */
 
 import React from 'react';
@@ -11,7 +11,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import TabHomeNavigation from './TabHomeNavigation';
-import TabFormNavigation from './TabFormNavigation';
+import TabArticleNavigation from './TabArticleNavigation';
 import TabPersonalNavigation from './TabPersonalNavigation';
 
 import { Colors } from '../Theme';
@@ -19,24 +19,26 @@ import { Colors } from '../Theme';
 // 路由配置
 const routeConfiguration = {
 	tabHomeNavigation: { screen: TabHomeNavigation },
-	tabFormNavigation: { screen: TabFormNavigation },
+	tabArticleNavigation: { screen: TabArticleNavigation },
 	tabPersonalNavigation: { screen: TabPersonalNavigation },
 	tabPersonalNavigation1: { screen: TabPersonalNavigation },
 };
 
 // 导航配置
 const navigatorConfiguration = {
+	// 路由选项
 	initialRouteName: 'tabPersonalNavigation',
-
-	activeTintColor: Colors.activeTintColor,
-	activeBackgroundColor: Colors.activeBackgroundColor,
-	inactiveTintColor: Colors.inactiveTintColor,
-	inactiveBackgroundColor: Colors.inactiveBackgroundColor,
-
-	labeled: true,
-	showLabel: true,
-	showIcon: true,
-	allowFontScaling: false,
+	// 视觉选项
+	tabBarOptions: {
+		activeTintColor: Colors.activeTintColor,
+		inactiveTintColor: Colors.inactiveTintColor,
+		activeBackgroundColor: Colors.activeBackgroundColor,
+		inactiveBackgroundColor: Colors.inactiveBackgroundColor,
+	
+		showLabel: true,
+		showIcon: true,
+		allowFontScaling: false,
+	},
 };
 
 export const MainTabNavigator = createBottomTabNavigator(routeConfiguration, navigatorConfiguration);

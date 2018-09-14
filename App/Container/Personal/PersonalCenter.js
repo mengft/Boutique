@@ -2,17 +2,26 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:51:54
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 10:29:41
+ * @Last Modified time: 2018-09-13 16:59:39
  */
 
 import React from 'react';
-import { View, Text, ScrollView, Animated, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, ScrollView, Animated, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Header, LoadImage, ScrollContainer } from '../../Component';
-import { TOGGLE_TAR_BAR } from '../../Redux/ActionTypes';
-import { Colors, px2dp, FontSize, ThemeStyles } from '../../Theme';
+import { TOGGLE_TAR_BAR, TEST_SAGE } from '../../Redux/ActionTypes';
+import { Colors, px2dp, FontSize, ThemeStyles, FontFamily, Metrics } from '../../Theme';
+
+const PERSONAL_OPTIONS = [
+	{ key: '0', title: '表单业务', iconName: 'address-book', iconColor: '#c03961', iconSize: px2dp(60), route: 'formScreen' },
+	{ key: '1', title: 'SVG图表', iconName: 'android', iconColor: '#2f6b69', iconSize: px2dp(60), route: 'chartScreen' },
+	{ key: '2', title: '动画特效', iconName: 'anchor', iconColor: '#5c27eb', iconSize: px2dp(60), route: 'formScreen' },
+	{ key: '3', title: '用户协议', iconName: 'amazon', iconColor: '#3366f7', iconSize: px2dp(60), route: 'formScreen' },
+	{ key: '4', title: '人工智能', iconName: 'bug', iconColor: '#c03961', iconSize: px2dp(60), route: 'formScreen' },
+	{ key: '5', title: '深度学习', iconName: 'bell', iconColor: '#2f6b69', iconSize: px2dp(60), route: 'formScreen' },
+];
 
 class PersonalCenter extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -45,6 +54,7 @@ class PersonalCenter extends React.Component {
 		);
 		// 初始化HeaderTitle 透明度
 		this.props.navigation.setParams({ opacity: new Animated.Value(0) });
+		// this.props.testSage()
 	}
 
 	componentWillUnmount() {
@@ -53,17 +63,29 @@ class PersonalCenter extends React.Component {
 	}
 
 	/**
+	 * 进入个人信息界面
+	 */
+	toPersonalInfo () {
+		if (this.props.access_token) {
+			this.props.navigation.navigate('personalInfo')
+		} else {
+			this.props.navigation.navigate('login', { transition: 'ModalSlideFromBottom' })
+		}
+	}
+
+	/**
 	 * 渲染UserInfo
 	 */
 	renderUserInfo() {
+		let online = this.props.access_token;
 		return (
-			<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('personalInfo')}>
+			<TouchableWithoutFeedback onPress={() => this.toPersonalInfo()}>
 				<LinearGradient colors={['#7a5cfe', '#37acfe']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[Styles.header, Styles.paddingView]}>
 					<LoadImage source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536142226217&di=8fb361a37c1b023cf97c602505ee0589&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20170831%2F999203916c074e9ea114bb0d029a8393.jpeg' }} style={Styles.avatar} />
 					<View style={Styles.headerMiddle}>
-						<Text style={Styles.nickname}>孟汉唐</Text>
+						<Text style={Styles.nickname}>{online ? '孟汉唐' : '立即登录'}</Text>
 						<View>
-							<Text style={Styles.score}>毕业院校：清华大学</Text>
+							<Text style={Styles.score}>{online ? '毕业院校：清华大学' : '解锁更多实用功能!'}</Text>
 						</View>
 					</View>
 					<Icon name="angle-right" color={Colors.C8} size={28} style={Styles.inconRight} />
@@ -72,6 +94,27 @@ class PersonalCenter extends React.Component {
 		);
 	}
 
+	/**
+	 * 渲染功能按钮
+	 */
+	renderOptions () {
+		return (
+			<View style={Styles.optionContainer}>
+				{PERSONAL_OPTIONS.map(item => {
+					let { key, title, iconName, iconColor, iconSize, route } = item
+					return (
+						<TouchableWithoutFeedback key={key} onPress={() => this.props.navigation.navigate(route)}>
+							<View style={Styles.optionItem}>
+								<Icon name={iconName} size={iconSize} color={iconColor} />
+								<Text style={Styles.optionTitle}>{title}</Text>
+							</View>
+						</TouchableWithoutFeedback>
+					)
+				})}
+			</View>
+		)
+	}
+	
 	render() {
 		return (
 			<ScrollContainer title="个人中心" navigation={this.props.navigation} scrollOffset={this.state.scrollOffset}>
@@ -79,20 +122,22 @@ class PersonalCenter extends React.Component {
 					onLayout={(e) => { this.setState({ scrollOffset: e.nativeEvent.layout.height - px2dp(18) }) }}
 					title="个人中心"
 					iconName="cog"
+					onPress={() => this.props.navigation.navigate('formScreen')}
 				/>
 				{this.renderUserInfo()}
-				<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('formScreen')}>
-					<View>
-						<Text style={{ fontSize: FontSize(90) }}>表单操作</Text>
-					</View>
-				</TouchableWithoutFeedback>
+				{this.renderOptions()}
 			</ScrollContainer>
 		);
 	}
 }
 
+const mapStateToProps = state => ({
+	access_token: state.user.access_token,
+});
+
 const mapDispatchToProps = dispatch => ({
 	toggleTabBarAction: tabBarVisible => dispatch({ type: TOGGLE_TAR_BAR, payload: { tabBarVisible } }),
+	testSage: () => dispatch({ type: TEST_SAGE })
 });
 
 const Styles = StyleSheet.create({
@@ -106,6 +151,10 @@ const Styles = StyleSheet.create({
 	nickname: { fontSize: FontSize(36), color: Colors.C8 },
 	score: { fontSize: FontSize(22), color: Colors.C8, marginTop: px2dp(16) },
 	inconRight: { position: 'absolute', right: px2dp(30) },
+	// Option
+	optionContainer: { paddingTop: px2dp(35), flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', flexWrap: 'wrap' },
+	optionItem: { padding: px2dp(35), width: Metrics.screenWidth / 4, justifyContent: 'center', alignItems: 'center' },
+	optionTitle: { marginTop: px2dp(10), color: Colors.C1, fontSize: FontSize(24), fontFamily: FontFamily.PF_R },
 });
 
-export default connect(null, mapDispatchToProps)(PersonalCenter);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalCenter);

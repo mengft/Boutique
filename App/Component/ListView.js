@@ -2,7 +2,7 @@
  * @Author: fantao.meng 
  * @Date: 2018-09-05 19:29:16 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 22:09:09
+ * @Last Modified time: 2018-09-06 17:24:55
  */
 
 import React from 'react';
@@ -75,7 +75,7 @@ export class Item extends React.Component {
 
 const Styles = StyleSheet.create({
     listView: { paddingLeft: px2dp(30) },
-    listItem: { paddingRight: px2dp(30), height: px2dp(112), flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: Colors.CBL },
-    listTitle: { maxWidth: Metrics.screenWidth / 2, fontSize: FontSize(28), color: Colors.C1, fontFamily: FontFamily.PF_M },
+    listItem: { paddingRight: px2dp(30), height: px2dp(112), flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth * 2, borderBottomColor: Colors.C7 },
+    listTitle: { maxWidth: Metrics.screenWidth / 2, fontSize: FontSize(28), color: Colors.C3, fontFamily: FontFamily.PF_M },
     listText: { flex: 1, textAlign: 'right', marginLeft: px2dp(100), fontSize: FontSize(28), color: Colors.C1, fontFamily: FontFamily.PF_L },
 })

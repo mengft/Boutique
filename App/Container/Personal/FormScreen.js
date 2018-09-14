@@ -2,11 +2,11 @@
  * @Author: fantao.meng 
  * @Date: 2018-09-06 10:26:04 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-06 15:40:36
+ * @Last Modified time: 2018-09-13 09:29:28
  */
 
 import React, { ReactNode } from 'react';
-import { View, Text, ScrollView, TextInput, StyleSheet, NativeModules, Keyboard, findNodeHandle } from 'react-native';
+import { View, Text, ScrollView, TextInput, StyleSheet, NativeModules, Keyboard, findNodeHandle, Animated } from 'react-native';
 import { KeyboardAvoidingView } from '../../Component';
 import { Colors, px2dp, ThemeStyles, FontSize, FontFamily } from '../../Theme';
 
@@ -35,10 +35,6 @@ export default class FormScreen extends React.Component {
                 <TextInput style={Styles.textInput} placeholder='活动地点1' placeholderTextColor={Colors.C5} />
                 <TextInput style={Styles.textInput} placeholder='活动地点2' placeholderTextColor={Colors.C5} />
                 <TextInput style={Styles.textInput} placeholder='活动地点3' placeholderTextColor={Colors.C5} />
-                <TextInput style={Styles.textInput} placeholder='活动地点4' placeholderTextColor={Colors.C5} />
-                <TextInput style={Styles.textInput} placeholder='活动地点5' placeholderTextColor={Colors.C5} />
-                <TextInput style={Styles.textInput} placeholder='活动地点6' placeholderTextColor={Colors.C5} />
-                <TextInput style={Styles.textInput} placeholder='活动地点7' placeholderTextColor={Colors.C5} />
             </KeyboardAvoidingView>
         )
     }
