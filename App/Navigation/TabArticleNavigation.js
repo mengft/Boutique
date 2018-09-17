@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:19:00
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-13 19:57:04
+ * @Last Modified time: 2018-09-17 16:37:50
  */
 
 import React from 'react';
@@ -15,7 +15,7 @@ import { Colors, ThemeStyles } from '../Theme';
 import { TransitionConfiguration } from '../Utils/Function';
 
 // 界面引入
-import ArticlePage from '../Container/Form/ArticlePage';
+import ArticlePage from '../Container/Article/ArticlePage';
 import WebViewScreen from '../Container/Common/WebViewScreen';
 
 // 路由配置

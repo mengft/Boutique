@@ -9,7 +9,8 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
 import { createLogger } from 'redux-logger'
-import { persistStore } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { createBlacklistFilter }  from 'redux-persist-transform-filter';
 // Reducer
 import { RootNavigatorReducer, MainNavigatorReducer, TabHomeNavigatorReducer, TabArticleNavigatorReducer, TabPersonalNavigatorReducer } from './NavigationReducer'
@@ -31,6 +32,8 @@ const enhancer = composeEnhancers(
         middlewareTabPersonal,
         sagaMiddle,    
     )
+    // 持久化增强器(用于启动分发Store)
+    // autoRehydrate()
 )
 
 export default function configureStore () {
@@ -43,27 +46,34 @@ export default function configureStore () {
         tabPersonalNavigatorReducer: TabPersonalNavigatorReducer,
         // 数据信息
         user: UserReducer,
-    })
-    const store = createStore(RootReducer, enhancer);
-    sagaMiddle.run(rootSage);
+    });
 
-    persistStore(
-        store,
-        {
-            // transforms: [
-            //     createBlacklistFilter('user', ['showIndicator']),
-            // ],
-            // blacklist: [
-            //     'rootNavigatorReducer',
-            //     'mainNavigatorReducer',
-            //     'tabHomeNavigatorReducer',
-            //     'tabArticleNavigatorReducer',
-            //     'tabPersonalNavigatorReducer',
-            // ],
-        }
-    );
+    const persistConfig = {
+        key: 'root',
+        storage: storage,
+        blacklist: [
+            'rootNavigatorReducer',
+            'mainNavigatorReducer',
+            'tabHomeNavigatorReducer',
+            'tabArticleNavigatorReducer',
+            'tabPersonalNavigatorReducer',
+        ],
+        transform: [
+            createBlacklistFilter('user', ['showIndicator']),
+        ],
+        debug: true,
+    };
+
+    // 持久化存储Store
+    const presistRootReducer = persistReducer(persistConfig, RootReducer);
+
+    const store = createStore(presistRootReducer, enhancer);
+    const persistor = persistStore(store);
+
+    // 开启saga对action的监听
+    sagaMiddle.run(rootSage);
     
-    return store;
+    return { store, persistor };
 }
 
 
