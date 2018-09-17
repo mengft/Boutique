@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:54:36
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-13 19:57:19
+ * @Last Modified time: 2018-09-17 17:16:16
  */
 
 import React from 'react';
@@ -27,7 +27,7 @@ const routeConfiguration = {
 // 导航配置
 const navigatorConfiguration = {
 	// 路由选项
-	initialRouteName: 'tabPersonalNavigation',
+	initialRouteName: 'tabArticleNavigation',
 	// 视觉选项
 	tabBarOptions: {
 		activeTintColor: Colors.activeTintColor,

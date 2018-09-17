@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-26 18:22:30
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-07 10:37:55
+ * @Last Modified time: 2018-09-17 19:30:34
  */
 
 import React, { ReactDOM, ReactChildren, ReactElement } from 'react';
@@ -51,6 +51,7 @@ class ScrollTopBar extends React.Component {
 		};
 		this.topBarContentWidth = 0;
 		this.touchMove = { pageX: -1, pageY: -1 };		// 记录内容区手势
+		this.clickHistory = [0];
 	}
 
 	componentWillMount() {
@@ -94,6 +95,15 @@ class ScrollTopBar extends React.Component {
 		});
 	}
 
+	shouldComponentUpdate (nextProps, nextState) {
+		if (this.clickHistory.indexOf(nextState.index) === -1) {
+			console.log(nextState.index);
+			// 点击记录
+			this.clickHistory.push(nextState.index);
+		}
+		return true;
+	}
+	
 	/**
 	 * Content 手势停止，开启动画
 	 * @param {*} gestureState
@@ -352,7 +362,7 @@ class ScrollTopBar extends React.Component {
 				transform: [{ translateX: this.state.position }],
 			}}
 			>
-				{React.Children.map(this.props.children, (child) => {
+				{React.Children.map(this.props.children, (child, index) => {
 					const props = {
 						...child.props,
 						onMoveShouldSetResponder: e => true,
@@ -360,7 +370,9 @@ class ScrollTopBar extends React.Component {
 						onTouchStart: e => this.onTouchMove('start', e.nativeEvent),
 						onTouchEnd: e => this.onTouchMove('end', e.nativeEvent),
 					};
-					return React.cloneElement(child, props);
+					return this.clickHistory.indexOf(index) !== -1 
+						? 	<View {...props} style={{ flex: 1 }}>{React.cloneElement(child, props)}</View>
+						: 	<View {...props} style={{ width: Metrics.screenWidth, height: Metrics.screenHeight }} />
 				})}
 			</Animated.View>
     	);

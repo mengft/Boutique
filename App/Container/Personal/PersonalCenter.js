@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:51:54
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-13 16:59:39
+ * @Last Modified time: 2018-09-17 15:52:47
  */
 
 import React from 'react';
@@ -66,7 +66,7 @@ class PersonalCenter extends React.Component {
 	 * 进入个人信息界面
 	 */
 	toPersonalInfo () {
-		if (this.props.access_token) {
+		if (this.props.isLogin) {
 			this.props.navigation.navigate('personalInfo')
 		} else {
 			this.props.navigation.navigate('login', { transition: 'ModalSlideFromBottom' })
@@ -77,15 +77,15 @@ class PersonalCenter extends React.Component {
 	 * 渲染UserInfo
 	 */
 	renderUserInfo() {
-		let online = this.props.access_token;
+		let isLogin = this.props.isLogin;
 		return (
 			<TouchableWithoutFeedback onPress={() => this.toPersonalInfo()}>
 				<LinearGradient colors={['#7a5cfe', '#37acfe']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[Styles.header, Styles.paddingView]}>
 					<LoadImage source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536142226217&di=8fb361a37c1b023cf97c602505ee0589&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20170831%2F999203916c074e9ea114bb0d029a8393.jpeg' }} style={Styles.avatar} />
 					<View style={Styles.headerMiddle}>
-						<Text style={Styles.nickname}>{online ? '孟汉唐' : '立即登录'}</Text>
+						<Text style={Styles.nickname}>{isLogin ? '孟汉唐' : '立即登录'}</Text>
 						<View>
-							<Text style={Styles.score}>{online ? '毕业院校：清华大学' : '解锁更多实用功能!'}</Text>
+							<Text style={Styles.score}>{isLogin ? '毕业院校：清华大学' : '解锁更多实用功能!'}</Text>
 						</View>
 					</View>
 					<Icon name="angle-right" color={Colors.C8} size={28} style={Styles.inconRight} />
@@ -122,7 +122,7 @@ class PersonalCenter extends React.Component {
 					onLayout={(e) => { this.setState({ scrollOffset: e.nativeEvent.layout.height - px2dp(18) }) }}
 					title="个人中心"
 					iconName="cog"
-					onPress={() => this.props.navigation.navigate('formScreen')}
+					onPress={() => this.props.navigation.navigate('settings')}
 				/>
 				{this.renderUserInfo()}
 				{this.renderOptions()}
@@ -132,7 +132,7 @@ class PersonalCenter extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	access_token: state.user.access_token,
+	isLogin: state.user.access_token,
 });
 
 const mapDispatchToProps = dispatch => ({

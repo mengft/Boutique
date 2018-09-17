@@ -33,6 +33,8 @@ export default UserReducer = (state = initialState, action) => {
                 ...state,
                 showIndicator: false,
             };
+        case ActionTypes.LOGOUT_SUCCESS:
+            return initialState;
         default:
             return state;
     }
