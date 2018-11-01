@@ -10,22 +10,24 @@
 
 ## 组件库
 
-- LoadImage 网络图片加载效果
+- react-native-loading-image 网络图片加载生命周期管理组件
+- react-native-scrollable-topbar 类资讯的频道切换组件（借助Animated、onTouch生命周期、React.Children、React.cloneElement实现）
+  - 优化点
+  - 未初始化的非可见区域的不会渲染
+  - 滑动结束之后根据左右边界位置进行补充滑动
+  - 兼容滑动（手势）动作和直接点击操作
+- react-native-keyboardavoidview 解决Form表单键盘遮盖情况（官网的组件问题较多，暂时不具备使用条件）
+- react-native-loadview 界面加载组件
+- react-native-refresh-loadmore-flatlist 支持下拉刷新、下拉加载组件自定义的List组件
+- react-native-scrollable-container 大标题与小标题相互切换，借助navigation和Animated实现透明度渐变
 - 仿Apple App Store首页UI、动画效果(Animated)
-- ScrollTopBar（借助Animated、onTouch生命周期、React.Children、React.cloneElement实现）,
-* 优化点 
-+ 未初始化的非可见区域的不会渲染
-+ 滑动结束之后根据左右边界位置进行补充滑动
-+ 兼容滑动（手势）动作和直接点击操作
+- ListView、Item 信息列表组件
+
 * TODO
 + state 局部更新的筛查
-- LoadView 界面加载组件
 - HeaderLeft、HeaderRight 导航标题栏，支持文字、Icon渲染
 - WebView加载通用界面（包含对WebView加载生命周期的处理）
-- ScrollContainer 大标题与小标题相互切换，借助navigation和Animated实现透明度渐变
-- FlatList 对原有的FlatList进行封装，实现上拉刷新RefershControl、下拉刷新UI组件的自定义
-- ListView、Item 信息列表组件
-- KeyboardAvoidingView 解决Form表单键盘遮盖情况（官网的组件问题较多，暂时不具备使用条件）
+
 
 ## 内置功能
 
