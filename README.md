@@ -10,24 +10,18 @@
 
 ## 组件库
 
-- [react-native-loading-image](http://www.baidu.com) 网络图片加载生命周期管理组件
-- react-native-scrollable-topbar 类资讯的频道切换组件（借助Animated、onTouch生命周期、React.Children、React.cloneElement实现）
+- [react-native-loading-image](https://www.npmjs.com/package/react-native-loading-image) 网络图片加载生命周期管理组件
+- [react-native-scrollable-topbar](https://www.npmjs.com/package/react-native-scrollable-topbar) 类资讯的频道切换组件（借助Animated、onTouch生命周期、React.Children、React.cloneElement实现）
   - 优化点
   - 未初始化的非可见区域的不会渲染
   - 滑动结束之后根据左右边界位置进行补充滑动
   - 兼容滑动（手势）动作和直接点击操作
-- react-native-keyboardavoidview 解决Form表单键盘遮盖情况（官网的组件问题较多，暂时不具备使用条件）
-- react-native-loadview 界面加载组件
-- react-native-refresh-loadmore-flatlist 支持下拉刷新、下拉加载组件自定义的List组件
-- react-native-scrollable-container 大标题与小标题相互切换，借助navigation和Animated实现透明度渐变
+- [react-native-keyboardavoidview](https://www.npmjs.com/package/react-native-keyboardavoidview) 解决Form表单键盘遮盖情况（官网的组件问题较多，暂时不具备使用条件）
+- [react-native-loadview](https://www.npmjs.com/package/react-native-loadview) 界面加载组件
+- [react-native-refresh-loadmore-flatlist](https://www.npmjs.com/package/react-native-refresh-loadmore-flatlist) 支持下拉刷新、下拉加载组件自定义的List组件
+- [react-native-scrollable-container](https://www.npmjs.com/package/react-native-scrollable-container) 大标题与小标题相互切换，借助navigation和Animated实现透明度渐变
 - 仿Apple App Store首页UI、动画效果(Animated)
 - ListView、Item 信息列表组件
-
-* TODO
-+ state 局部更新的筛查
-- HeaderLeft、HeaderRight 导航标题栏，支持文字、Icon渲染
-- WebView加载通用界面（包含对WebView加载生命周期的处理）
-
 
 ## 内置功能
 
@@ -37,3 +31,10 @@
 - react-native-debugger组件的引入（react-native-debugger-open）调试工具，后续会增加相关插件的引入
 - 借助redux-persist实现Redux持久化存储与数据恢复分发
 - 引入sage的watch flow，示例参见 loginFlow
+- HeaderLeft、HeaderRight 导航标题栏，支持文字、Icon渲染
+- WebView加载通用界面（包含对WebView加载生命周期的处理）
+
+## TODO
+- state 局部更新的筛查
+- PureComponent的引入
+- VirtualList的引入
