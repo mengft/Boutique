@@ -10,7 +10,7 @@
 
 ## 组件库
 
-- react-native-loading-image 网络图片加载生命周期管理组件
+- [react-native-loading-image](http://www.baidu.com) 网络图片加载生命周期管理组件
 - react-native-scrollable-topbar 类资讯的频道切换组件（借助Animated、onTouch生命周期、React.Children、React.cloneElement实现）
   - 优化点
   - 未初始化的非可见区域的不会渲染
