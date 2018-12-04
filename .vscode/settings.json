@@ -16,5 +16,5 @@
     //     "jsx"
     // ]
     // Tab键自动补全Elment标签
-    "emmet.triggerExpansionOnTab": true,
+    "emmet.triggerExpansionOnTab": true
 }

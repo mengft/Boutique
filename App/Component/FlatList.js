@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-09-04 11:07:39
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-07 10:23:22
+ * @Last Modified time: 2018-12-04 10:17:16
  */
 
 import React from 'react';
@@ -94,8 +94,8 @@ export default class FlatListRefresh extends React.Component {
 
 	/**
 	 * 开始手势
-	 * locationX 触摸点相对于组件的位置
-	 * pageX 触摸点相对于屏幕的位置
+	 * locationY 触摸点相对于组件的位置
+	 * pageY 触摸点相对于屏幕的位置
 	 * @param {*} evt
 	 * @param {*} gestureState
 	 */
@@ -109,7 +109,6 @@ export default class FlatListRefresh extends React.Component {
 		} else {
 			this.hideDy = locationY - (pageY - this.topBarHeight);
 		}
-		// console.log(this.topBarHeight);
 	}
 
 	/**
@@ -183,17 +182,17 @@ export default class FlatListRefresh extends React.Component {
 	renderListHeaderComponent() {
 		let warnText;
 		switch (this.state.refreshStatus) {
-		case 1:
-			warnText = '下拉刷新';
-			break;
-		case 2:
-			warnText = '松开刷新';
-			break;
-		case 3:
-			warnText = '更新中...';
-			break;
-		default:
-			break;
+			case 1:
+				warnText = '下拉刷新';
+				break;
+			case 2:
+				warnText = '松开刷新';
+				break;
+			case 3:
+				warnText = '更新中...';
+				break;
+			default:
+				break;
 		}
 		return (
 			<View>

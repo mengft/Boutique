@@ -2,13 +2,12 @@
  * @Author: fantao.meng 
  * @Date: 2018-08-29 00:48:46 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-13 16:33:55
+ * @Last Modified time: 2018-09-20 16:46:22
  */
 
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import * as PropTypes from 'prop-types'
-import { Colors, px2dp, FontSize } from '../Theme'
 
 export default class LoadView extends React.Component {
 
@@ -20,12 +19,12 @@ export default class LoadView extends React.Component {
         iconSize: PropTypes.number,
         message: PropTypes.string,
         visible: PropTypes.bool,
-        gif: PropTypes.string,
+        gif: PropTypes.oneOf(["spinner", "triangles"]),
     };
 
     static defaultProps = {
         style: {},
-        iconSize: px2dp(80),
+        iconSize: 40,
         visible: true,
         message: null,
         gif: 'spinner',
@@ -48,6 +47,6 @@ export default class LoadView extends React.Component {
 }
 
 const Styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: Colors.C8, justifyContent: 'center', alignItems: 'center' },
-    message: { color: Colors.C3, fontSize: FontSize(22), fontWeight: 'bold', marginTop: px2dp(10) }
+    container: { flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center' },
+    message: { color: '#54657e', fontSize: 11, fontWeight: 'bold', marginTop: 5 }
 })

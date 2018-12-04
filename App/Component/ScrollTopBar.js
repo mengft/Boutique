@@ -2,22 +2,19 @@
  * @Author: fantao.meng
  * @Date: 2018-08-26 18:22:30
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-17 19:30:34
+ * @Last Modified time: 2018-09-19 11:20:17
  */
 
 import React, { ReactDOM, ReactChildren, ReactElement } from 'react';
 import {
-	View, Image, Text, ScrollView, FlatList, WebView, StyleSheet, Animated, PanResponder, TouchableWithoutFeedback, ViewPropTypes, InteractionManager,
+	View, Text, ScrollView, StyleSheet, Animated, TouchableWithoutFeedback, ViewPropTypes, InteractionManager, Dimensions, Platform
 } from 'react-native';
 import * as PropTypes from 'prop-types';
-import { ItemSeparator } from './index';
-import {
-	Colors, px2dp, Metrics, FontSize,
-} from '../Theme';
 
-const UNDERLINE_WIDTH = px2dp(120);		// 下划线宽度
-const ITEM_GRAP = px2dp(20);				// 图片之间的grap
-const ANIMATED_DURATION = 500;			// 动画duration
+const Metrics = Dimensions.get('window');
+const UNDERLINE_WIDTH = 60;			// 下划线宽度
+const ITEM_GRAP = 10;				// 图片之间的grap
+const ANIMATED_DURATION = 500;		// 动画duration
 
 class ScrollTopBar extends React.Component {
 	static propTypes = {
@@ -33,12 +30,12 @@ class ScrollTopBar extends React.Component {
 
 	static defaultProps = {
 		topBarUnderlineStyle: {
-			backgroundColor: Colors.CB, height: px2dp(8), width: UNDERLINE_WIDTH, marginTop: -px2dp(8),
+			backgroundColor: '#298eff', height: 4, width: UNDERLINE_WIDTH, marginTop: -4,
 		},
 		labelList: ['推荐', '军事', '政治', '财经', '娱乐', '社会', '生活', '美食', '旅行'],
-		topBarInactiveTextColor: Colors.C5,
-		topBarActiveTextColor: Colors.CB,
-		topBarBackgroundColor: Colors.C3,
+		topBarInactiveTextColor: '#aab9ca',
+		topBarActiveTextColor: '#298eff',
+		topBarBackgroundColor: '#54657e',
 	}
 
 	constructor(props) {
@@ -49,44 +46,10 @@ class ScrollTopBar extends React.Component {
 			topBar: new Animated.Value(0),
 			underline: new Animated.Value(ITEM_GRAP),
 		};
+		this.rootTag = null;
 		this.topBarContentWidth = 0;
 		this.touchMove = { pageX: -1, pageY: -1 };		// 记录内容区手势
 		this.clickHistory = [0];
-	}
-
-	componentWillMount() {
-		// TopBar区滑动事件响应
-		this._topBarPanResponder = PanResponder.create({
-    		// 要求成为响应者：
-			onStartShouldSetPanResponder: (evt, gestureState) => true,
-    		onStartShouldSetPanResponderCapture: (evt, gestureState) => {
-				// 发生点击事件，将事件响应交给Touchable控件
-				if (Math.abs(gestureState.dx) < 4 && Math.abs(gestureState.dy) < 4) return false;
-				// 发生拖动事件
-				return true;
-			},
-    		onMoveShouldSetPanResponder: (evt, gestureState) => true,
-    		onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-    		onPanResponderGrant: (evt, gestureState) => {
-    			// 开始手势操作。给用户一些视觉反馈，让他们知道发生了什么事情！
-				// gestureState.{x,y} 现在会被设置为0
-    		},
-    		onPanResponderMove: (evt, gestureState) => {
-    			// 最近一次的移动距离为gestureState.move{X,Y}
-    			// 从成为响应者开始时的累计手势移动距离为gestureState.d{x,y}
-    		},
-    		onPanResponderTerminationRequest: (evt, gestureState) => true,
-    		onPanResponderRelease: (evt, gestureState) => {
-    			// 用户放开了所有的触摸点，且此时视图已经成为了响应者。
-				// 一般来说这意味着一个手势操作已经成功完成。
-				this.onTopBarPanResponderRelease(gestureState);
-    		},
-    		onPanResponderTerminate: (evt, gestureState) => {
-    			// 另一个组件已经成为了新的响应者，所以当前手势将被取消。
-    		},
-    		onShouldBlockNativeResponder: (evt, gestureState) => true
-    		,
-    	});
 	}
 
 	componentDidMount() {
@@ -97,7 +60,6 @@ class ScrollTopBar extends React.Component {
 
 	shouldComponentUpdate (nextProps, nextState) {
 		if (this.clickHistory.indexOf(nextState.index) === -1) {
-			console.log(nextState.index);
 			// 点击记录
 			this.clickHistory.push(nextState.index);
 		}
@@ -105,6 +67,10 @@ class ScrollTopBar extends React.Component {
 	}
 	
 	/**
+	 * moveX 	自上次反馈之后的x坐标移动
+	 * x0	 	滑动手势识别开始的时候的在屏幕中的坐标
+	 * dx		累计滑动距离
+	 * vx		滑动距离
 	 * Content 手势停止，开启动画
 	 * @param {*} gestureState
 	 */
@@ -115,16 +81,17 @@ class ScrollTopBar extends React.Component {
 		if (gestureState.dx < 0) {
 			// 往左滑动,渲染右侧界面
 			if (this.state.index < (this.props.labelList.length - 1)) {
-				this.refs[`topBar${this.state.index + 1}`].measure((x, y, width, height, pageX, pageY) => {
-					// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
+
+				this.refs[`topBar${this.state.index + 1}`].measureLayout(this.rootTag, (left, top, width, height) => {
+					// console.log('left=' + left + ',top=' + top + ',width' + width + ',height' + height)
 					Animated.parallel([
 						Animated.timing(this.state.position, {
-							toValue: -Metrics.screenWidth * (this.state.index + 1),
+							toValue: -Metrics.width * (this.state.index + 1),
 							duration: ANIMATED_DURATION,
 							isInteraction: true,
 						}),
 						Animated.timing(this.state.underline, {
-							toValue: x + (width - UNDERLINE_WIDTH) / 2,
+							toValue: left + (width - UNDERLINE_WIDTH) / 2,
 							duration: ANIMATED_DURATION,
 							isInteraction: true,
 						}),
@@ -134,20 +101,22 @@ class ScrollTopBar extends React.Component {
 						});
 					});
 				});
+
 			}
 		} else {
 			// 往右滑动,渲染左侧界面
 			if (this.state.index <= 0) return;
-			this.refs[`topBar${this.state.index - 1}`].measure((x, y, width, height, pageX, pageY) => {
-				// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
+			
+			this.refs[`topBar${this.state.index - 1}`].measureLayout(this.rootTag, (left, top, width, height) => {
+				// console.log('left=' + left + ',top=' + top + ',width' + width + ',height' + height)
 				Animated.parallel([
 					Animated.timing(this.state.position, {
-						toValue: -Metrics.screenWidth * (this.state.index - 1),
+						toValue: -Metrics.width * (this.state.index - 1),
 						duration: ANIMATED_DURATION,
 						isInteraction: true,
 					}),
 					Animated.timing(this.state.underline, {
-						toValue: x + (width - UNDERLINE_WIDTH) / 2,
+						toValue: left + (width - UNDERLINE_WIDTH) / 2,
 						duration: ANIMATED_DURATION,
 						isInteraction: true,
 					}),
@@ -156,50 +125,9 @@ class ScrollTopBar extends React.Component {
 						if (this.state.index > 0) this.checkTopBarPosition('back');
 					});
 				});
+
 			});
 		}
-	}
-
-	/**
-	 * TopBar 手势停止，开启动画
-	 * @param {*} gestureState
-	 */
-	onTopBarPanResponderRelease(gestureState) {
-		// console.log(gestureState)
-		gestureState = { ...gestureState };
-		// 是否探明TopBar边界
-		if (!this.topBarContentWidth) {
-			this.refs[`topBar${this.props.labelList.length - 1}`].measure((x, y, width, height, pageX, pageY) => {
-				// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
-				// console.log(`TopBar的长度为=${width + x}`)
-				this.topBarContentWidth = width + x;
-				this.onTopBarPanResponderRelease(gestureState);
-			});
-			return;
-		}
-
-		// 如果topBar区域小于界面宽度，放弃topBar滑动动作
-		if (this.topBarContentWidth <= Metrics.screenWidth) return;
-
-		// 降低界面滑动敏感度
-		if (Math.abs(gestureState.dx) < 40 || Math.abs(gestureState.dy) > 20) return;
-		// 获取当前AnimatedValue的number
-		let translateX = this.state.topBar.__getValue();
-		if (gestureState.dx < 0) {
-			// 往左滑动,渲染右侧界面
-			translateX -= Metrics.screenWidth / 2;
-			if (translateX < (-this.topBarContentWidth + Metrics.screenWidth)) translateX = -this.topBarContentWidth + Metrics.screenWidth;
-		} else {
-			// 往右滑动,渲染左侧界面
-			translateX += Metrics.screenWidth / 2;
-			if (translateX > 0) translateX = 0;
-		}
-		// console.log(translateX)
-		Animated.timing(this.state.topBar, {
-			toValue: translateX,
-			duration: ANIMATED_DURATION,
-			isInteraction: true,
-		}).start();
 	}
 
 	/**
@@ -221,7 +149,6 @@ class ScrollTopBar extends React.Component {
 	 * @param {*} index
 	 */
 	switchTopBar(index) {
-		// console.log(index)
 		// 获取
 		if (this.state.index === 0 && index === 0) {
 			return;
@@ -230,16 +157,15 @@ class ScrollTopBar extends React.Component {
 		if (index > this.state.index) {
 			// 往左滑动,渲染右侧界面
 			if (this.state.index < (this.props.labelList.length - 1)) {
-				this.refs[`topBar${index}`].measure((x, y, width, height, pageX, pageY) => {
-					// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
+				this.refs[`topBar${index}`].measureLayout(this.rootTag, (left, top, width, height) => {
 					Animated.parallel([
 						Animated.timing(this.state.position, {
-							toValue: -Metrics.screenWidth * index,
+							toValue: -Metrics.width * index,
 							duration: ANIMATED_DURATION,
 							isInteraction: true,
 						}),
 						Animated.timing(this.state.underline, {
-							toValue: x + (width - UNDERLINE_WIDTH) / 2,
+							toValue: left + (width - UNDERLINE_WIDTH) / 2,
 							duration: ANIMATED_DURATION,
 							isInteraction: true,
 						}),
@@ -253,16 +179,16 @@ class ScrollTopBar extends React.Component {
 		} else {
 			// 往右滑动,渲染左侧界面
 			if (this.state.index > 0) {
-				this.refs[`topBar${index}`].measure((x, y, width, height, pageX, pageY) => {
-					// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
+				this.refs[`topBar${index}`].measureLayout(this.rootTag, (left, top, width, height) => {
+					// console.log('left=' + left + ',top=' + top + ',width' + width + ',height' + height);
 					Animated.parallel([
 						Animated.timing(this.state.position, {
-							toValue: -Metrics.screenWidth * index,
+							toValue: -Metrics.width * index,
 							duration: ANIMATED_DURATION,
 							isInteraction: true,
 						}),
 						Animated.timing(this.state.underline, {
-							toValue: x + (width - UNDERLINE_WIDTH) / 2,
+							toValue: left + (width - UNDERLINE_WIDTH) / 2,
 							duration: ANIMATED_DURATION,
 							isInteraction: true,
 						}),
@@ -271,7 +197,8 @@ class ScrollTopBar extends React.Component {
 							this.checkTopBarPosition('back');
 						});
 					});
-				});
+				})
+
 			}
 		}
 	}
@@ -282,70 +209,43 @@ class ScrollTopBar extends React.Component {
 	checkTopBarPosition(flag) {
 		// 是否探明TopBar边界
 		if (!this.topBarContentWidth) {
-			this.refs[`topBar${this.props.labelList.length - 1}`].measure((x, y, width, height, pageX, pageY) => {
-				// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
-				// console.log(`TopBar的长度为=${width + x}`)
-				this.topBarContentWidth = width + x;
+			this.refs[`topBar${this.props.labelList.length - 1}`].measureLayout(this.rootTag, (left, top, width, height) => {
+				// console.log('left=' + left + ',top=' + top + ',width' + width + ',height' + height);
+				this.topBarContentWidth = width + left;
 				this.checkTopBarPosition(flag);
 			});
 			return;
 		}
 
 		// 如果topBar区域小于界面宽度，放弃边界检查
-		if (this.topBarContentWidth <= Metrics.screenWidth) return;
+		if (this.topBarContentWidth <= Metrics.width) return;
 
 		// 左边界情况处理
-		if (this.state.index === 0 && this.state.topBar.__getValue() !== 0) {
-			// console.log('左')
-			// console.log(this.state.topBar.__getValue())
-			Animated.timing(this.state.topBar, {
-				toValue: 0,
-				duration: ANIMATED_DURATION,
-				isInteraction: true,
-			}).start();
-			return;
-		}
 		// 右边界情况处理
-		if (this.state.index === (this.props.labelList.length - 1) && this.state.topBar.__getValue() !== -this.topBarContentWidth) {
-			// console.log('右')
-			// console.log(this.state.topBar.__getValue())
-			Animated.timing(this.state.topBar, {
-				toValue: -(this.topBarContentWidth - Metrics.screenWidth),
-				duration: ANIMATED_DURATION,
-				isInteraction: true,
-			}).start();
-			return;
-		}
 
 		if (flag === 'forward' && this.state.index < (this.props.labelList.length - 1)) {
-			this.refs[`topBar${this.state.index + 1}`].measure((x, y, width, height, pageX, pageY) => {
-				// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
-				if (pageX + width > Metrics.screenWidth) {
-					let translateX = x + Metrics.screenWidth / 2 - pageX;
-					// 判断下次滑动是否触底
-					if (this.topBarContentWidth && translateX > (this.topBarContentWidth - Metrics.screenWidth)) translateX = this.topBarContentWidth - Metrics.screenWidth;
-					// console.log('translateX=' + translateX)
-					Animated.timing(this.state.topBar, {
-						toValue: -translateX,
-						duration: ANIMATED_DURATION,
-						isInteraction: true,
-					}).start();
-				}
+
+			this.refs[`topBar${this.state.index + 1}`].measureLayout(this.rootTag, (left, top, width, height) => {
+				this.refs[`topBar${this.state.index + 1}`].measure((x, y, width, height, pageX, pageY) => {
+					if (pageX + width > Metrics.width) {
+						let translateX = left + Metrics.width / 2 - pageX;
+						// 判断下次滑动是否触底
+						if (this.topBarContentWidth && translateX > (this.topBarContentWidth - Metrics.width)) translateX = this.topBarContentWidth - Metrics.width;
+						this.scrollview.scrollTo({ x: translateX, animated: true })
+					}
+				})
 			});
 		} else if (flag === 'back' && this.state.index > 0) {
-			this.refs[`topBar${this.state.index - 1}`].measure((x, y, width, height, pageX, pageY) => {
-				// console.log('width=' + width + ',x=' + x + ',pageX' + pageX)
-				if (pageX < 0) {
-					let translateX = x - Metrics.screenWidth / 2 - pageX;
-					// 判断下次滑动是否触底
-					if (translateX < 0) translateX = 0;
-					// console.log('translateX=' + translateX)
-					Animated.timing(this.state.topBar, {
-						toValue: -translateX,
-						duration: ANIMATED_DURATION,
-						isInteraction: true,
-					}).start();
-				}
+
+			this.refs[`topBar${this.state.index - 1}`].measureLayout(this.rootTag, (left, top, width, height) => {
+				this.refs[`topBar${this.state.index - 1}`].measure((x, y, width, height, pageX, pageY) => {
+					if (pageX < 0) {
+						let translateX = left - Metrics.width / 2 - pageX;
+						// 判断下次滑动是否触底
+						if (translateX < 0) translateX = 0;
+						this.scrollview.scrollTo({ x: translateX, animated: true })
+					}
+				});
 			});
 		}
 	}
@@ -356,9 +256,8 @@ class ScrollTopBar extends React.Component {
 	renderContent() {
     	return (
 			<Animated.View style={{
-				flex: 1,
 				flexDirection: 'row',
-				width: Metrics.screenWidth * this.props.labelList.length,
+				width: Metrics.width * this.props.labelList.length,
 				transform: [{ translateX: this.state.position }],
 			}}
 			>
@@ -372,7 +271,7 @@ class ScrollTopBar extends React.Component {
 					};
 					return this.clickHistory.indexOf(index) !== -1 
 						? 	<View {...props} style={{ flex: 1 }}>{React.cloneElement(child, props)}</View>
-						: 	<View {...props} style={{ width: Metrics.screenWidth, height: Metrics.screenHeight }} />
+						: 	<View {...props} style={{ width: Metrics.width, height: Metrics.height }} />
 				})}
 			</Animated.View>
     	);
@@ -383,27 +282,35 @@ class ScrollTopBar extends React.Component {
      */
 	renderTopBar() {
     	return (
-			<Animated.View {...this._topBarPanResponder.panHandlers} style={{ minWidth: Metrics.screenWidth, backgroundColor: this.props.topBarBackgroundColor, transform: [{ translateX: this.state.topBar }] }}>
-				<View style={{ flexDirection: 'row', aliginItems: 'center' }}>
-					{ this.props.labelList.map((item, index) => {
-						const check = this.state.index === index;
-						const title = typeof item === 'object' ? item.title : item;
-						return (
-							<TouchableWithoutFeedback key={index} onPress={() => this.switchTopBar(index)} key={index}>
-								<View
-									ref={`topBar${index}`}
-									style={{
-										justifyContent: 'center', padding: ITEM_GRAP, paddingTop: Metrics.STATUSBAR_HEIGHT + px2dp(40), paddingBottom: px2dp(40), backgroundColor: this.props.topBarBackgroundColor,
-									}}
-								>
-									<Text style={[{ color: this.props.topBarInactiveTextColor }, check && { color: this.props.topBarActiveTextColor }]}>{title}</Text>
-								</View>
-							</TouchableWithoutFeedback>
-						);
-					})}
+			<ScrollView
+				ref={e => { if (e) this.scrollview = e }}
+				horizontal
+				showsHorizontalScrollIndicator={false}
+				style={{ backgroundColor: this.props.topBarBackgroundColor }}
+				>
+				<View>
+					<View style={{ flexDirection: 'row', aliginItems: 'center' }}>
+						{ this.props.labelList.map((item, index) => {
+							const check = this.state.index === index;
+							const title = typeof item === 'object' ? item.title : item;
+							return (
+								<TouchableWithoutFeedback key={index} onPress={() => this.switchTopBar(index)} key={index}>
+									<View
+										ref={`topBar${index}`}
+										collapsable={false}
+										style={{
+											justifyContent: 'center', padding: ITEM_GRAP, paddingTop: Platform.OS === 'ios' ? 30 : 0, paddingBottom: 20, backgroundColor: this.props.topBarBackgroundColor,
+										}}
+									>
+										<Text style={[{ color: this.props.topBarInactiveTextColor }, check && { color: this.props.topBarActiveTextColor }]}>{title}</Text>
+									</View>
+								</TouchableWithoutFeedback>
+							);
+						})}
+					</View>
+					{this.renderTopUnderline()}
 				</View>
-				{this.renderTopUnderline()}
-			</Animated.View>
+			</ScrollView>
     	);
 	}
 
@@ -412,13 +319,13 @@ class ScrollTopBar extends React.Component {
 	 */
 	renderTopUnderline() {
 		return (
-			<Animated.View style={[{ transform: [{ translateX: this.state.underline }] }, this.props.topBarUnderlineStyle]} />
+			<Animated.View ref={e => { if (e) this.underline = e }} style={[{ transform: [{ translateX: this.state.underline }] }, this.props.topBarUnderlineStyle]} />
 		);
 	}
 
 	render() {
     	return (
-			<View style={Styles.container}>
+			<View style={Styles.container} onLayout={e => this.rootTag = e.nativeEvent.target}>
 				{this.renderTopBar()}
 				{this.renderContent()}
 			</View>
@@ -427,7 +334,7 @@ class ScrollTopBar extends React.Component {
 }
 
 const Styles = StyleSheet.create({
-	container: { flex: 1, backgroundColor: Colors.C7 },
+	container: { backgroundColor: '#eceff4' },
 });
 
 export default ScrollTopBar;

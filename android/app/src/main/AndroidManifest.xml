@@ -21,6 +21,11 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+        <!-- Service -->
+        <service android:name="com.mengft.updateappmanager.UpdateService" />
+        <service android:name="com.mengft.updateappmanager.UpdateService$NotificationClickReceiver" />
+
     </application>
 
 </manifest>

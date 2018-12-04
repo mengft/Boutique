@@ -2,7 +2,7 @@
  * @Author: fantao.meng 
  * @Date: 2018-09-17 16:54:17 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-17 19:23:21
+ * @Last Modified time: 2018-12-04 11:08:39
  */
 
 import React from 'react';
@@ -18,17 +18,12 @@ const ARTICLE_PICUTRE_HEIGHT = ARTICLE_PICUTRE_WIDTH * 0.618;
 class ArticleList extends ScrollView {
     constructor(props) {
         super(props);
+        that = this;
         this.state = {
             refreshing: false,
             endReaching: false,
-            source: [],
+            source: FLAST_SOURCE,
         };
-    }
-
-    componentDidMount () {
-        // InteractionManager.runAfterInteractions(() => {
-            this.setState({ source: FLAST_SOURCE });
-        // });
     }
 
 	/**
@@ -47,12 +42,12 @@ class ArticleList extends ScrollView {
 	renderArticleItem(item) {
 		let { title, author, pageViews, source } = item
 		return (
-			<TouchableOpacity onPress={() => this.onClickArticleItem(item)}>
+			<TouchableOpacity onPress={() => this.onClickArticleItem(item)} activeOpacity={0.8}>
 				<View style={Styles.article}>
 					<Text style={Styles.articleTitle} numberOfLines={2}>{title}</Text>
 					<View style={Styles.imageContent}>
 						{source.map((element, index) => 
-							<LoadImage key={Number(index)} source={element} style={[Styles.articleAvatar, { width: ARTICLE_PICUTRE_WIDTH, height: ARTICLE_PICUTRE_HEIGHT }]} />
+							<LoadImage key={Number(index)} source={element} style={[Styles.articleAvatar, { width: ARTICLE_PICUTRE_WIDTH, height: ARTICLE_PICUTRE_HEIGHT }]} type='load' />
 						)}
 					</View>
 					<View style={Styles.textContent}>
@@ -75,21 +70,28 @@ class ArticleList extends ScrollView {
                 refreshing={this.state.refreshing}
                 onRefresh={() => {
                     this.setState({ refreshing: true }, () => {
-                        const that = this;
                         setTimeout(() => {
                             that.setState({ refreshing: false })
-                        }, 500);
+                        }, 1000);
                     })
                 }}
-                /* endReaching={this.state.endReaching}
-                onEndReached={() => {
+                onEndReachedThreshold={0.5}
+                endReaching={this.state.endReaching}
+                onEndReached={e => {
+                    // 可加上数据源的校验
+                    if (this.state.endReaching) return;
                     this.setState({ endReaching: true }, () => {
-                        const that = this;
                         setTimeout(() => {
-                            that.setState({ endReaching: false })
+                            let temp = this.state.source;
+                            temp.concat(FLAST_SOURCE);
+                            that.setState({
+                                source: temp.concat(FLAST_SOURCE)
+                            }, () => {
+                                that.setState({ endReaching: false })
+                            })
                         }, 3000);
                     });
-                }} */
+                }}
             />
         )
     }

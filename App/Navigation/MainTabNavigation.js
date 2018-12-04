@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:54:36
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-17 17:16:16
+ * @Last Modified time: 2018-12-04 09:19:26
  */
 
 import React from 'react';
@@ -21,7 +21,6 @@ const routeConfiguration = {
 	tabHomeNavigation: { screen: TabHomeNavigation },
 	tabArticleNavigation: { screen: TabArticleNavigation },
 	tabPersonalNavigation: { screen: TabPersonalNavigation },
-	tabPersonalNavigation1: { screen: TabPersonalNavigation },
 };
 
 // 导航配置

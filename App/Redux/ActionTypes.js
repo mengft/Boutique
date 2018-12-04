@@ -2,7 +2,7 @@
  * @Author: fantao.meng 
  * @Date: 2018-08-31 00:08:15 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-13 14:51:55
+ * @Last Modified time: 2018-11-30 17:15:21
  */
 
 // 测试
@@ -19,3 +19,6 @@ export const LOGOUT = 'LOGOUT';
 export const LOGOUT_PENDING = 'LOGOUT_PENDING';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
+
+// 忽略版本
+export const UPDATE_VERSION = "UPDATE_VERSION";

@@ -2,7 +2,7 @@
  * @Author: fantao.meng 
  * @Date: 2018-08-30 19:36:57 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-13 20:03:05
+ * @Last Modified time: 2018-12-01 19:56:53
  */
 
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -11,6 +11,7 @@ import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-hel
 import { createLogger } from 'redux-logger'
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import { createBlacklistFilter }  from 'redux-persist-transform-filter';
 // Reducer
 import { RootNavigatorReducer, MainNavigatorReducer, TabHomeNavigatorReducer, TabArticleNavigatorReducer, TabPersonalNavigatorReducer } from './NavigationReducer'
@@ -19,6 +20,7 @@ import { middlewareTabArticle } from '../Navigation/TabArticleNavigation';
 import { middlewareTabPersonal } from '../Navigation/TabPersonalNavigation';
 import { middlewareMainTab } from '../Navigation/MainTabNavigation';
 import UserReducer from './UserReducer';
+import AppReducer from './AppReducer';
 import rootSage from '../Saga';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -46,11 +48,12 @@ export default function configureStore () {
         tabPersonalNavigatorReducer: TabPersonalNavigatorReducer,
         // 数据信息
         user: UserReducer,
+        app: AppReducer
     });
 
     const persistConfig = {
         key: 'root',
-        storage: storage,
+        storage,
         blacklist: [
             'rootNavigatorReducer',
             'mainNavigatorReducer',
@@ -61,6 +64,7 @@ export default function configureStore () {
         transform: [
             createBlacklistFilter('user', ['showIndicator']),
         ],
+        stateReconciler: autoMergeLevel2,
         debug: true,
     };
 

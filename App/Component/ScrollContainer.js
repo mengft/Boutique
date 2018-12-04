@@ -2,13 +2,12 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:51:54
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-12 19:51:22
+ * @Last Modified time: 2018-09-20 00:47:07
  */
 
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { ScrollView, Animated, StyleSheet } from 'react-native';
-import { Colors } from '../Theme';
 
 export default class ScrollContainer extends React.Component {
 
@@ -82,7 +81,7 @@ export default class ScrollContainer extends React.Component {
 
 
 const Styles = StyleSheet.create({
-	container: { flex: 1, backgroundColor: Colors.CBK },
+	container: { flex: 1, backgroundColor: '#F7F7F7' },
 });
 
 /**

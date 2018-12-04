@@ -2,7 +2,7 @@
  * @Author: fantao.meng 
  * @Date: 2018-09-10 15:20:35 
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-12 13:40:57
+ * @Last Modified time: 2018-09-20 10:34:51
  */
 
 import * as Config from '../Config';
@@ -85,6 +85,26 @@ const FLAST_SOURCE = [
 		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG603.jpg` },
 		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG604.jpg` },
 		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG605.jpg` },
+	] },
+	{ title: '"Wear two hats"是带两顶帽子？真拿你的中式英语1没办法...', author: '英语功夫天天练', pageViews: 9089, source: [
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG604.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG605.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG606.jpg` },
+	] },
+	{ title: '"Wear two hats"是带两顶帽子？真拿你的中式英语1没办法...', author: '英语功夫天天练', pageViews: 9089, source: [
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG604.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG605.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG606.jpg` },
+	] },
+	{ title: '"Wear two hats"是带两顶帽子？真拿你的中式英语1没办法...', author: '英语功夫天天练', pageViews: 9089, source: [
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG604.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG605.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG606.jpg` },
+	] },
+	{ title: '"Wear two hats"是带两顶帽子？真拿你的中式英语1没办法...', author: '英语功夫天天练', pageViews: 9089, source: [
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG604.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG605.jpg` },
+		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG606.jpg` },
 	] },
 	{ title: '"Wear two hats"是带两顶帽子？真拿你的中式英语1没办法...', author: '英语功夫天天练', pageViews: 9089, source: [
 		{ uri: `${Config.Host}/Assets/Images/Home/WechatIMG604.jpg` },

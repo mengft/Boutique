@@ -2,11 +2,11 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:51:54
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-17 15:52:47
+ * @Last Modified time: 2018-11-26 10:16:20
  */
 
 import React from 'react';
-import { View, Text, Image, ScrollView, Animated, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, ScrollView, Animated, StyleSheet, TouchableWithoutFeedback, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +17,7 @@ import { Colors, px2dp, FontSize, ThemeStyles, FontFamily, Metrics } from '../..
 const PERSONAL_OPTIONS = [
 	{ key: '0', title: '表单业务', iconName: 'address-book', iconColor: '#c03961', iconSize: px2dp(60), route: 'formScreen' },
 	{ key: '1', title: 'SVG图表', iconName: 'android', iconColor: '#2f6b69', iconSize: px2dp(60), route: 'chartScreen' },
-	{ key: '2', title: '动画特效', iconName: 'anchor', iconColor: '#5c27eb', iconSize: px2dp(60), route: 'formScreen' },
+	{ key: '2', title: '动画特效', iconName: 'anchor', iconColor: '#5c27eb', iconSize: px2dp(60), route: 'randomBeat' },
 	{ key: '3', title: '用户协议', iconName: 'amazon', iconColor: '#3366f7', iconSize: px2dp(60), route: 'formScreen' },
 	{ key: '4', title: '人工智能', iconName: 'bug', iconColor: '#c03961', iconSize: px2dp(60), route: 'formScreen' },
 	{ key: '5', title: '深度学习', iconName: 'bell', iconColor: '#2f6b69', iconSize: px2dp(60), route: 'formScreen' },
@@ -44,6 +44,7 @@ class PersonalCenter extends React.Component {
 			'willFocus',
 			() => {
 				this.props.toggleTabBarAction(true);
+				StatusBar.setBarStyle("default");
 			},
 		);
 		this.willBlurSubscription = this.props.navigation.addListener(

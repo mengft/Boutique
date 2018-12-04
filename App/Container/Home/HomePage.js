@@ -2,19 +2,23 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:00:15
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-10 15:25:20
+ * @Last Modified time: 2018-11-26 10:15:31
  */
 
 import React from 'react';
 import {
-	View, Text, Image, FlatList, Modal, ScrollView, WebView, StyleSheet, TouchableWithoutFeedback, Animated, NativeModules,
+	View, Text, Image, FlatList, Modal, WebView, StyleSheet, TouchableWithoutFeedback, Animated, NativeModules, Platform, StatusBar
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LoadImage, LoadView } from '../../Component';
 import { TOGGLE_TAR_BAR } from '../../Redux/ActionTypes';
-import { px2dp, Colors, ThemeStyles, FontSize, Metrics } from '../../Theme';
+import {
+	px2dp, Colors, ThemeStyles, FontSize, Metrics,
+} from '../../Theme';
 import { FlatListSource, FlatListFooterSource } from '../../Utils/Constant';
+
+const AnimatedWebView = Animated.createAnimatedComponent(WebView);
 
 class HomePage extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -35,24 +39,26 @@ class HomePage extends React.Component {
 		};
 		// 弹框数据
 		this.info = { title: '', text: '', source: '' };
+		this.index = -1;
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		this.willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			payload => {
-				this.props.toggleTabBarAction(true)
-			}
+			(payload) => {
+				this.props.toggleTabBarAction(true);
+				StatusBar.setBarStyle("default");
+			},
 		);
 		this.willBlurSubscription = this.props.navigation.addListener(
 			'willBlur',
-			payload => {
-				this.props.toggleTabBarAction(false)
-			}
+			(payload) => {
+				this.props.toggleTabBarAction(false);
+			},
 		);
 	}
 
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.willFocusSubscription.remove();
 		this.willBlurSubscription.remove();
 	}
@@ -62,7 +68,6 @@ class HomePage extends React.Component {
 	 * @param {*} index
 	 */
 	onItemPressIn(e, index) {
-		// console.log(e.target);
 		if (this.state.modalVisible || undefined === e.target) return;
 		// 获取四角坐标
 		NativeModules.UIManager.measure(e.target, (x, y, width, height, pageX, pageY) => {
@@ -73,11 +78,12 @@ class HomePage extends React.Component {
 			};
 			this.info = FlatListSource[index];
 			this.setState({ index }, () => {
+				this.index = index;
 				Animated.timing(
 					this.state.scale,
 					{
 						toValue: 0.96,
-						duration: 80,
+						duration: 40,
 						isInteraction: true,
 						useNativeDriver: true,
 					},
@@ -87,11 +93,10 @@ class HomePage extends React.Component {
 	}
 
 	/**
-	 * 列表Item PressOut
+	 * 列表Item PressOut for ios
 	 */
 	onItemPressOut(e) {
-		// console.log(e.target);
-		if (this.state.modalVisible) return;
+		if (Platform.OS === 'android' || this.state.modalVisible) return;
 		if (undefined !== e.target) {
 			// 用户点击了PressIn的Item点击
 			this.setState({ modalVisible: true });
@@ -101,12 +106,40 @@ class HomePage extends React.Component {
 				this.state.scale,
 				{
 					toValue: 1,
-					duration: 80,
+					duration: 40,
 					isInteraction: true,
 					useNativeDriver: true,
 				},
 			).start();
 		}
+	}
+
+	/**
+	 * onTouchCancel for android
+	 */
+	onTouchCancel() {
+		if (this.index === -1) return;
+		this.index = -1;
+		// 还原缩放效果（此时用户没有将PressIn的Item点击）
+		Animated.timing(
+			this.state.scale,
+			{
+				toValue: 1,
+				duration: 40,
+				isInteraction: true,
+				useNativeDriver: true,
+			},
+		).start();
+	}
+
+	/**
+	 * onTouchEndCapture for android
+	 */
+	onTouchEndCapture() {
+		if (Platform.OS === 'ios' || this.index === -1 || this.state.modalVisible) return;
+		this.index = -1;
+		if (this.state.modalVisible) return;
+		this.setState({ modalVisible: true });
 	}
 
 	/**
@@ -117,7 +150,7 @@ class HomePage extends React.Component {
 			Animated.sequence([
 				Animated.timing(this.state.position, {
 					toValue: 1,
-					timing: 40,
+					timing: 20,
 					isInteraction: true,
 				}),
 				// 还原缩放效果
@@ -125,7 +158,7 @@ class HomePage extends React.Component {
 					this.state.scale,
 					{
 						toValue: 1,
-						duration: 80,
+						duration: 20,
 						isInteraction: true,
 						useNativeDriver: true,
 					},
@@ -241,13 +274,16 @@ class HomePage extends React.Component {
 	 * 渲染列表Header
 	 */
 	renderListHeader() {
+		console.log(this.props);
 		return (
 			<View style={Styles.header}>
 				<View style={Styles.headerLeft}>
 					<Text style={Styles.date}>8月20日 星期一</Text>
 					<Text style={Styles.day}>Today</Text>
 				</View>
-				<Image style={Styles.avatar} source={require('../../Assets/Images/Home/WechatIMG601.jpg')} />
+				<TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('chanelScreen')}>
+					<Image style={Styles.avatar} source={require('../../Assets/Images/Home/WechatIMG601.jpg')} />
+				</TouchableWithoutFeedback>
 			</View>
 		);
 	}
@@ -331,6 +367,7 @@ class HomePage extends React.Component {
 				{ this.state.index >= 0
 					&& (
 						<Animated.ScrollView
+							bounces={false}
 							style={{
 								transform: [
 									{
@@ -371,7 +408,8 @@ class HomePage extends React.Component {
 								}}
 								onLoad={() => this.onModalVisibele(true)}
 							/>
-							<Animated.View
+							<WebView source />
+							<AnimatedWebView
 								style={{
 									width: this.state.position.interpolate({
 										inputRange: [0, 1, 2],
@@ -379,19 +417,19 @@ class HomePage extends React.Component {
 									}),
 									height: this.state.position.interpolate({
 										inputRange: [0, 1, 2],
-										outputRange: [0, Metrics.screenHeight * 2, 0],
+										outputRange: [0, Metrics.screenHeight * 1, 0],
 									}),
 									overflow: 'hidden',
 								}}
-							>
-								<WebView
-									style={{ height: Metrics.screenHeight * 2 }}
-									source={{ uri: 'https://mp.weixin.qq.com/s?__biz=MzA3MzYzNjMyMA==&mid=2650179561&idx=1&sn=cf53d62bf08635b4972d3a5f435d5510' }}
-									scrollEnabled={false}
-									startInLoadingState
-									renderLoading={() => <LoadView />}
-								/>
-							</Animated.View>
+								// source={require("../../Assets/Html/article.html")}
+								source={{ 
+									uri: 'https://mp.weixin.qq.com/s?__biz=MzA3MzYzNjMyMA==&mid=2650179561&idx=1&sn=cf53d62bf08635b4972d3a5f435d5510',
+									headers: { 'Cache-Control': 'public' }
+								}}
+								scrollEnabled={false}
+								startInLoadingState
+								// renderLoading={() => <LoadView />}
+							/>
 							<TouchableWithoutFeedback onPress={() => this.onModalVisibele(false)}>
 								<Animated.View style={{
 									position: 'absolute',
@@ -420,10 +458,12 @@ class HomePage extends React.Component {
 					style={Styles.flat}
 					data={FlatListSource}
 					renderItem={this.renderItem.bind(this)}
-					ListHeaderComponent={this.renderListHeader}
+					ListHeaderComponent={() => this.renderListHeader()}
 					ListFooterComponent={this.renderListFooter}
 					ItemSeparatorComponent={() => <View style={Styles.itemSeparator} />}
 					keyExtractor={(item, index) => index.toString()}
+					onTouchCancel={e => this.onTouchCancel()}
+					onTouchEndCapture={e => this.onTouchEndCapture()}
 				/>
 				{this.renderAnimatedModal()}
 			</View>
@@ -432,12 +472,12 @@ class HomePage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	mainNavigatorReducer: state.mainNavigatorReducer
+	mainNavigatorReducer: state.mainNavigatorReducer,
 });
 
 const mapDispatchToProps = dispatch => ({
-	toggleTabBarAction: (tabBarVisible) => dispatch({ type: TOGGLE_TAR_BAR, payload: { tabBarVisible } }),
-})
+	toggleTabBarAction: tabBarVisible => dispatch({ type: TOGGLE_TAR_BAR, payload: { tabBarVisible } }),
+});
 
 const Styles = StyleSheet.create({
 	container: {

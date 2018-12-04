@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-20 16:57:10
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-05 14:33:07
+ * @Last Modified time: 2018-12-03 22:40:06
  */
 
 import React from 'react';
@@ -10,7 +10,6 @@ import {
 	View, Image, Animated, Easing, ViewPropTypes, StyleSheet, Platform,
 } from 'react-native';
 import * as PropTypes from 'prop-types';
-import { Colors } from '../Theme';
 
 export default class LoadImage extends React.Component {
 	static propTypes = {
@@ -28,12 +27,14 @@ export default class LoadImage extends React.Component {
 	  ]),
 	  onLoad: PropTypes.func,
 	  onError: PropTypes.func,
-	}
+	  type: PropTypes.oneOf(["animated", "load"])
+	};
 
 	static defaultProps = {
 		onLoad: () => {},
 		onError: () => {},
-	}
+		type: "animated"
+	};
 
 	constructor(props) {
     	super(props);
@@ -51,23 +52,24 @@ export default class LoadImage extends React.Component {
      * 图片资源开始加载
      */
 	onLoadStart() {
-    	// 配置加载动画
-    	this.backgroundColorAnimated = Animated.sequence([
-    	Animated.timing(this.state.backgroundColor, {
-    		toValue: 1,
-    		easing: Easing.ease,
-    		duration: 800,
-    	}),
-    	Animated.timing(this.state.backgroundColor, {
-    		toValue: 0,
-    		easing: Easing.in,
-    		duration: 800,
-    	}),
-    	]);
-
-    	this.backgroundColorAnimated.start(() => {
-    		this.state.loadStatus === 'pending' && this.onLoadStart();
-    	});
+		// 配置加载动画
+		if (this.props.type !== 'animated') return
+		this.backgroundColorAnimated = Animated.sequence([
+			Animated.timing(this.state.backgroundColor, {
+				toValue: 1,
+				easing: Easing.ease,
+				duration: 800,
+			}),
+			Animated.timing(this.state.backgroundColor, {
+				toValue: 0,
+				easing: Easing.in,
+				duration: 800,
+			}),
+		]);
+		// 开启循环动画
+		this.backgroundColorAnimated.start(() => {
+			this.state.loadStatus === 'pending' && this.onLoadStart();
+		});
 	}
 
 	/**
@@ -101,17 +103,23 @@ export default class LoadImage extends React.Component {
      * 渲染加载中界面
      */
 	renderPending() {
-    	const { style } = this.props;
+		const { style, type } = this.props;
     	return (
-	    <Animated.View style={[style, {
-				position: 'absolute',
-				backgroundColor: this.state.backgroundColor.interpolate({
-					inputRange: [0, 1],
-					outputRange: ['#F7F9FB', Colors.C7],
-				}),
-			}]}
-	    >
-	    </Animated.View>
+			type === 'animated' ?
+				<Animated.View 
+					style={[style, {
+						position: 'absolute',
+						backgroundColor: this.state.backgroundColor.interpolate({
+							inputRange: [0, 1],
+							outputRange: ['#F7F9FB', '#eceff4'],
+						}),
+					}]}
+				>
+				</Animated.View>
+			:
+				<View style={[style, { position: 'absolute', justifyContent: 'center', alignItems: 'center', color: '#eceff4' }]}>
+					<Image style={{ width: 30, height: 30 }} source={require('../Assets/Images/Component/loading-spinner.gif')} />
+				</View>
     	);
 	}
 
@@ -127,18 +135,17 @@ export default class LoadImage extends React.Component {
     	return (
     		defaultSource
     			? <Image source={defaultSource} style={[{ position: 'absolute' }, style]} />
-    			: (
-	       			<View style={[{
-    						justifyContent: 'center', backgroundColor: Colors.C7, position: 'absolute', alignItems: 'center',
+    			: 
+				<View style={[{
+						justifyContent: 'center', backgroundColor: Colors.C7, position: 'absolute', alignItems: 'center',
 					}, style]}
-	       			/>
-    			)
+				/>
     	);
 	}
 
 	render() {
 		let { style, source } = this.props;
-		const { loadStatus } = this.state;
+		let { loadStatus } = this.state;
     	// 兼容 uri为null的情况
     	if (source.hasOwnProperty('uri') && typeof source.uri !== 'string') {
     		source = { ...source, uri: '' };
@@ -146,12 +153,12 @@ export default class LoadImage extends React.Component {
     	// 兼容Androud无法对空字符串进行处理情况
     	if (Platform.OS === 'android' && source.hasOwnProperty('uri') && !source.uri) {
     		source = { ...source, uri: ' ' };
-    	}
+		}
     	return (
 			<View style={[style, { overflow: 'hidden' }]}>
 				<Image
-					source={source}
-					// source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536058126543&di=feb3c32b5cf72366c50b745a88e50507&imgtype=jpg&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D3806537842%2C2941389672%26fm%3D214%26gp%3D0.jpg' }}
+					/* source={source} */
+					source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536058126543&di=feb3c32b5cf72366c50b745a88e50507&imgtype=jpg&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D3806537842%2C2941389672%26fm%3D214%26gp%3D0.jpg' }}
 					style={style}
 					onLoadStart={this.onLoadStart.bind(this)}
 					onLoadEnd={this.onLoadEnd.bind(this)}

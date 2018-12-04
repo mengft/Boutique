@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:19:00
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-12 19:54:21
+ * @Last Modified time: 2018-11-09 17:45:57
  */
 
 import React from 'react';
@@ -16,10 +16,12 @@ import { TransitionConfiguration } from '../Utils/Function';
 
 // 界面引入
 import HomePage from '../Container/Home/HomePage';
+import ChanelScreen from "../Container/Home/ChanelScreen";
 
 // 路由配置
 const routeConfiguration = {
 	homePage: { screen: HomePage },
+	chanelScreen: { screen: ChanelScreen },
 };
 
 // 导航配置

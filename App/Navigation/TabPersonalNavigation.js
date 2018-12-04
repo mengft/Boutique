@@ -2,7 +2,7 @@
  * @Author: fantao.meng
  * @Date: 2018-08-15 17:19:00
  * @Last Modified by: fantao.meng
- * @Last Modified time: 2018-09-17 14:38:35
+ * @Last Modified time: 2018-11-23 15:02:42
  */
 
 import React from 'react';
@@ -21,7 +21,8 @@ import PersonalInfo from '../Container/Personal/PersonalInfo';
 import FormScreen from '../Container/Personal/FormScreen';
 import ChartScreen from '../Container/Personal/ChartScreen';
 import Settings from '../Container/Personal/Settings';
-import Login from '../Container/Auth/Login'
+import RandomBeatScreen from '../Container/Personal/RandomBeatScreen';
+import Login from '../Container/Auth/Login';
 
 // 路由配置
 const routeConfiguration = {
@@ -31,6 +32,7 @@ const routeConfiguration = {
 	chartScreen: { screen: ChartScreen },
 	settings: { screen: Settings },
 	login: { screen: Login },
+	randomBeat: { screen: RandomBeatScreen },
 };
 
 
